@@ -6,6 +6,9 @@ import Criptomoneda from './Criptomoneda';
 
 function Formulario() {
     const [ criptomonedas, guardarCriptomonedas ] = useState([]);
+    const [ monedaCotizar, guardarMonedaCotizar ] = useState('');
+    const [ criptoCotizar, guardarCriptoCotizar ] = useState('');
+    const [ error, guardarError ] = useState(false);
 
     useEffect(() => {
 
@@ -18,14 +21,33 @@ function Formulario() {
             guardarCriptomonedas(resultado.data.Data);
         };
         consultarAPI();
-
     }, []);
 
+    // Validar que el usuario llene los dos capos del formulario
+    const cotizarMoneda = e => {
+        e.preventDefault();
+
+        // Validar si ambos campos estan llenos
+        if(monedaCotizar === '' || criptoCotizar === '') {
+            guardarError(true);
+            return;
+        }
+        // Pasar los datos al componente principal
+        guardarError(false);
+    }
+    
         return(
-            <form>
+            <form
+                onSubmit={cotizarMoneda}
+            >
                 <div className="row">
                    <label>Elige tu Moneda</label>
-                   <select className="u-full-width">
+                   <select 
+                        className="u-full-width"
+                        onChange={ e => guardarMonedaCotizar(e.target.value) }
+                   >
+
+
                        <option value="">- Elige tu Moneda -</option>
                        <option value="USD">Dólar Americano</option>
                        <option value="EUR">Euro</option>
@@ -36,8 +58,11 @@ function Formulario() {
 
                 <div className="row">
                     <label>Elige tu Criptomoneda</label>
-                    <select className="u-full-width">
-
+                    <select 
+                    className="u-full-width"
+                    onChange={ e => guardarCriptoCotizar(e.target.value) }
+                    >
+                        <option value="">- Elige tu Criptomoneda -</option>
                         { criptomonedas.map(criptomoneda => (
                             <Criptomoneda
                                 key={criptomoneda.CoinInfo.Id}
@@ -47,6 +72,9 @@ function Formulario() {
 
                     </select>
                 </div>
+
+                <input type="submit" className="button-primary u-full-width" value="Calcular" />         
+
             </form>
         )
 }
