@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Criptomoneda from './Criptomoneda';
+import Error from './Error';
 
 function Formulario() {
     const [ criptomonedas, guardarCriptomonedas ] = useState([]);
@@ -35,11 +36,15 @@ function Formulario() {
         // Pasar los datos al componente principal
         guardarError(false);
     }
+
+    // Mostrat error en caso que exista
+    const componente = (error) ?  <Error mensaje="Ambos campos son obligatorios" /> : null;
     
         return(
             <form
                 onSubmit={cotizarMoneda}
             >
+                {componente}
                 <div className="row">
                    <label>Elige tu Moneda</label>
                    <select 
