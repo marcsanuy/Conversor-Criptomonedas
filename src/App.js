@@ -32,7 +32,7 @@ function App() {
     setTimeout(() => {
       guardarCargando(false);
       guardarResultado(resultado.data.DISPLAY[criptomoneda][moneda]);
-    }, 3000);
+    }, 2000);
 
     }
 
